@@ -11,13 +11,21 @@ interface IMovieCard {
   rating: number;
   poster: string;
   genres: Record<"name", string>[];
+  handleClick: () => void;
 }
 
-export const MovieCard: FC<IMovieCard> = ({ name, year, rating, poster, genres }) => {
+export const MovieCard: FC<IMovieCard> = ({
+  name,
+  year,
+  rating,
+  poster,
+  genres,
+  handleClick,
+}) => {
   // TODO разобраться с высотой и растягиванием карточки
   return (
-    <Card elevation={5}>
-      <CardActionArea>
+    <Card elevation={5} sx={{ width: "100%" }}>
+      <CardActionArea onClick={handleClick}>
         <CardMedia component="img" alt={`Постер фильма ${name}`} src={poster} />
         <CardContent>
           <Stack
