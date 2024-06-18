@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const options = {
+export const options = {
   apiV1: "https://api.kinopoisk.dev/v1/movie",
   "apiV1.4": "https://api.kinopoisk.dev/v1.4/movie",
   headers: { accept: "application/json", "X-API-KEY": "W2J699Q-A004MEQ-QT01BZJ-J86BKQW" },
@@ -12,43 +12,78 @@ export type TMovie = {
   id: number;
   name: string;
   year?: number;
-  rating?: { imdb: number };
-  poster?: { url: string };
+  rating?: {
+    kp: number;
+    imdb: number;
+    filmCritics: number;
+    russianFilmCritics: number;
+    await: number | null;
+  };
+  poster?: { url: string; previewUrl: string };
   genres?: TGenre[];
+  description: string | null;
 };
 
-type TGetMoviesResponse = {
+export type TGetMoviesResponse = {
   docs: TMovie[];
 };
 
 export const getMovies = async ({
-  page = "1",
-  limit = "50",
+  page,
+  limit,
   genres,
   years,
   rating,
 }: {
-  page?: string;
-  limit?: string;
+  page: string;
+  limit: string;
   genres?: string[];
   years?: { from: string; to: string };
-  rating?: string;
+  rating?: { from: string; to: string };
 }) => {
   try {
     const params = {
       page,
       limit,
-      year: `${years.from}-${years.to}`,
+      sortField: "rating.kp",
+      sortType: "1",
+      type: "movie",
     };
 
     const query = new URLSearchParams(params);
 
+    const fieldsForQuery = {
+      selectFields: ["id", "rating", "name", "genres", "poster", "year"],
+      notNullFields: ["poster.url", "name"],
+      "genres.name": genres ?? [],
+    };
+
+    for (const [fields, values] of Object.entries(fieldsForQuery)) {
+      for (const value of values) {
+        query.append(fields, value);
+      }
+    }
+
+    if (years?.from || years?.to) {
+      query.append(
+        "year",
+        `${years.from !== "" ? years.from : 1900}-${years.to !== "" ? years.to : 3000}`
+      );
+    }
+
+    if (rating?.from || rating?.to) {
+      query.append(
+        "rating.kp",
+        `${rating.from !== "" ? rating.from : 0}-${rating.to !== "" ? rating.to : 10}`
+      );
+    }
+
     const response = await axios.get<TGetMoviesResponse>(
-      `${
-        options["apiV1.4"]
-      }?${query.toString()}&selectFields=id&selectFields=description&selectFields=rating&selectFields=name&selectFields=poster&selectFields=genres&selectFields=year&notNullFields=poster.url&notNullFields=name&sortField=rating.kp&sortType=-1&type=movie`,
+      `${options["apiV1.4"]}?${query.toString()}
+      `,
       { headers: options.headers }
     );
+
     return response.data?.docs;
   } catch (error) {
     console.error(error);
@@ -77,7 +112,7 @@ export const getMovieById = async (id: string) => {
   }
 };
 
-type TGetGenreResponse = { name: string }[];
+export type TGetGenreResponse = { name: string }[];
 
 export const getGenres = async () => {
   try {
