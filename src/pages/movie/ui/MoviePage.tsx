@@ -2,6 +2,7 @@ import { Button, Chip, Collapse, Grid, Paper, Typography } from "@mui/material";
 import { MouseEventHandler, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMovieById } from "../../../shared/api/api";
+import { IGenre } from "../../../shared/types/types";
 
 export interface IMoviePage {
   id: number;
@@ -9,7 +10,7 @@ export interface IMoviePage {
   year: number;
   description: string | null;
   rating: Record<"kp", number>;
-  genres: Record<"name", string>[];
+  genres: IGenre[];
   poster: Record<"url", string>;
 }
 

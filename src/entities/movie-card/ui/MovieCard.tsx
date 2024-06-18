@@ -4,13 +4,15 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, Chip, Stack } from "@mui/material";
 import { FC } from "react";
+import { IGenre } from "../../../shared/types/types";
 
-interface IMovieCard {
+export interface IMovieCard {
+  id: number;
   name: string;
-  year: number;
-  rating: number;
-  poster: string;
-  genres: Record<"name", string>[];
+  year?: number;
+  rating?: { imdb: number };
+  poster?: { url: string };
+  genres?: IGenre[];
   handleClick: () => void;
 }
 
@@ -42,10 +44,10 @@ export const MovieCard: FC<IMovieCard> = ({
                 {year}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {genres.map((item) => item.name).join(", ")}
+                {genres?.map((item) => item.name).join(", ")}
               </Typography>
             </Stack>
-            <Chip label={rating} color="success" variant="outlined" />
+            <Chip label={rating?.imdb} color="success" variant="outlined" />
           </Stack>
         </CardContent>
       </CardActionArea>
