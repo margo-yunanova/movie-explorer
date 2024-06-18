@@ -1,7 +1,4 @@
 import axios from "axios";
-import { IMoviePage } from "../../pages/movie/ui/MoviePage";
-import { IMovieCard } from "../../entities/movie-card/ui/MovieCard";
-import { IGenre } from "../types/types";
 
 const options = {
   apiV1: "https://api.kinopoisk.dev/v1/movie",
@@ -9,17 +6,32 @@ const options = {
   headers: { accept: "application/json", "X-API-KEY": "W2J699Q-A004MEQ-QT01BZJ-J86BKQW" },
 };
 
+type TGenre = { name: string };
+
+export type TMovie = {
+  id: number;
+  name: string;
+  year?: number;
+  rating?: { imdb: number };
+  poster?: { url: string };
+  genres?: TGenre[];
+};
+
+type TGetMoviesResponse = {
+  docs: TMovie[];
+};
+
 export const getMovies = async ({
   page = "1",
   limit = "50",
-  genre,
+  genres,
   years,
   rating,
 }: {
   page?: string;
   limit?: string;
   genres?: string[];
-  years?: { from: ""; to: "" };
+  years?: { from: string; to: string };
   rating?: string;
 }) => {
   try {
@@ -31,7 +43,7 @@ export const getMovies = async ({
 
     const query = new URLSearchParams(params);
 
-    const response = await axios.get<Record<"docs", IMovieCard[]>>(
+    const response = await axios.get<TGetMoviesResponse>(
       `${
         options["apiV1.4"]
       }?${query.toString()}&selectFields=id&selectFields=description&selectFields=rating&selectFields=name&selectFields=poster&selectFields=genres&selectFields=year&notNullFields=poster.url&notNullFields=name&sortField=rating.kp&sortType=-1&type=movie`,
@@ -43,9 +55,19 @@ export const getMovies = async ({
   }
 };
 
+type TGetMovieResponse = {
+  id: number;
+  name: string;
+  year: number;
+  description: string | null;
+  rating: Record<"kp", number>;
+  genres: TGenre[];
+  poster: Record<"url", string>;
+};
+
 export const getMovieById = async (id: string) => {
   try {
-    const response = await axios.get<IMoviePage>(`${options["apiV1.4"]}/${id}`, {
+    const response = await axios.get<TGetMovieResponse>(`${options["apiV1.4"]}/${id}`, {
       headers: options.headers,
     });
 
@@ -55,9 +77,11 @@ export const getMovieById = async (id: string) => {
   }
 };
 
+type TGetGenreResponse = { name: string }[];
+
 export const getGenres = async () => {
   try {
-    const response = await axios.get<IGenre[]>(
+    const response = await axios.get<TGetGenreResponse>(
       `${options.apiV1}/possible-values-by-field?field=genres.name`,
       {
         headers: options.headers,
