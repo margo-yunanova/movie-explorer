@@ -1,7 +1,6 @@
 import { Theme, useTheme } from "@mui/material/styles";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { FC } from "react";
 import { IGenre } from "../../types/types";
@@ -42,38 +41,30 @@ export const MultipleSelect: FC<IMultipleSelect> = ({
   const theme = useTheme();
 
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: "100%", mt: 3 }}>
-        <Select
-          multiple
-          displayEmpty
-          value={checkedGenres}
-          onChange={handleMultipleSelect}
-          input={<OutlinedInput />}
-          renderValue={(selected) => {
-            if (selected.length === 0) {
-              return <em>{placeholder}</em>;
-            }
+    <Select
+      multiple
+      displayEmpty
+      value={checkedGenres}
+      onChange={handleMultipleSelect}
+      input={<OutlinedInput />}
+      renderValue={(selected) => {
+        if (selected.length === 0) {
+          return <em>{placeholder}</em>;
+        }
 
-            return selected.join(", ");
-          }}
-          MenuProps={MenuProps}
-          inputProps={{ "aria-label": "Without label" }}
-        >
-          <MenuItem disabled value="">
-            <em>{placeholder}</em>
-          </MenuItem>
-          {genres?.map(({ name }) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, checkedGenres, theme)}
-            >
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+        return selected.join(", ");
+      }}
+      MenuProps={MenuProps}
+      inputProps={{ "aria-label": "Without label" }}
+    >
+      <MenuItem disabled value="">
+        <em>{placeholder}</em>
+      </MenuItem>
+      {genres?.map(({ name }) => (
+        <MenuItem key={name} value={name} style={getStyles(name, checkedGenres, theme)}>
+          {name}
+        </MenuItem>
+      ))}
+    </Select>
   );
 };
