@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, Chip, Stack } from "@mui/material";
+import { Box, CardActionArea, Chip, Stack } from "@mui/material";
 import { FC } from "react";
 import { IGenre } from "../../../shared/types/types";
 
@@ -26,10 +26,18 @@ export const MovieCard: FC<IMovieCard> = ({
 }) => {
   // TODO разобраться с высотой и растягиванием карточки
   return (
-    <Card elevation={5} sx={{ width: "100%" }}>
-      <CardActionArea onClick={handleClick}>
-        <CardMedia component="img" alt={`Постер фильма ${name}`} src={poster} />
-        <CardContent>
+        <Box display="flex" sx={{ aspectRatio: "2/3" }}>
+          {poster?.url ? (
+            <CardMedia
+              component="img"
+              alt={`Постер фильма ${name}`}
+              src={poster?.url}
+              style={{ flexGrow: 1 }}
+            />
+          ) : (
+            <Typography variant="h6">Постер скоро будет добавлен</Typography>
+          )}
+        </Box>
           <Stack
             display="flex"
             flexDirection="row"

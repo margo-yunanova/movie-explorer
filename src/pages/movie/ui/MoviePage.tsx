@@ -40,7 +40,11 @@ export const MoviePage = () => {
     <Paper elevation={0}>
       <Grid container spacing={{ xs: 2, md: 3 }} alignItems="flex-start">
         <Grid item container justifyContent="center" sm={4} md={4} paddingBottom={3}>
-          <img src={data?.poster.url} style={{ objectFit: "contain", width: "100%" }} />
+          {data?.poster.url ? (
+            <img src={data?.poster.url} style={{ objectFit: "contain", width: "100%" }} />
+          ) : (
+            <Typography variant="h6">Постер скоро будет добавлен</Typography>
+          )}
         </Grid>
         <Grid
           item
