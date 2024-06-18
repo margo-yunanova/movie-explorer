@@ -1,9 +1,8 @@
 import React from "react";
 import "./index.css";
 import { createRoot } from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./app/routers/appRouter.tsx";
 import { worker } from "./mocks/browser.ts";
+import App from "./app/App.tsx";
 
 async function enableMocking() {
   // if (process.env.NODE_ENV !== 'development') {
@@ -22,7 +21,7 @@ const rootElement = createRoot(document.getElementById("root")!);
 enableMocking().then(() => {
   rootElement.render(
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <App />
     </React.StrictMode>
   );
 });
