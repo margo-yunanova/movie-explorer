@@ -1,30 +1,72 @@
-# React + TypeScript + Vite
+# Элитное приложение для получения эксклюзивной информации о фильмах
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Данное приложение разработано в рамках выполнения профильного задания - Фронтенд-разработчик на стажировку в VK
 
-Currently, two official plugins are available:
+## Ссылка на деплой приложения
+https://movie-explorer-hub.netlify.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Интерфейс API Кинопоиска эмулирован с использованием MSW.
 
-## Expanding the ESLint configuration
+## Сборка и запуск проекта
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Запуск в режиме разработки
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+npm install
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Откройте http://localhost:5173, чтобы посмотреть результат в браузере.
+
+### Локальное тестирование приложения
+
+```bash
+$ npm run build
+$ npm run preview
+```
+
+
+## Стек технологий
+
+Фронтенд написан на React + TypeScript со сборщиком Vite
+
+|Пакеты|Назначение|
+|:----|:----|
+|[MUI](https://mui.com/)|Библиотека компонентов для создания интерфейсов на Material Design System от Google|
+|[React-router](https://reactrouter.com/en/main)|Библиотека для переключения и маршрутизации страниц.|
+|[Axios](https://axios-http.com/ru/docs/intro)|HTTP-клиент.|
+|[MSW](https://mswjs.io/)|Библиотека для имитации API, которая позволяет создавать мок, перехватывая запросы на сетевом уровне.|
+
+## Техническое задание
+
+Создание приложения для просмотра информации о фильмах с использованием React, TypeScript и открытого API (например, [**Кинопоиск API**](https://kinopoisk.dev/) (https://kinopoisk.dev/)).
+
+### **Функционал**:
+
+- Отображение списка фильмов:
+  - Приложение должно отображать список фильмов, получаемых с помощью [API](https://kinopoisk.dev/).
+  - Отображать фильмы постранично по 50 фильмов на страницу.
+  - Для каждого фильма необходимо отобразить:
+    - Постер фильма (если доступен).
+    - Название фильма.
+    - Год выпуска.
+    - Рейтинг фильма.
+- Должна быть возможность фильтровать список фильмов:
+  - По жанру (выбор нескольких жанров).  
+  - По рейтингу (диапазон рейтинга).  
+  - По году выпуска (диапазон лет начиная с 1990).  
+- Просмотр детальной информации о фильме:
+  - При клике на фильм из списка или результатов поиска, приложение должно переходить на страницу с детальной информацией об этом фильме.
+  - На странице фильма необходимо отобразить:
+    - Постер фильма (если доступен).
+    - Название фильма.
+    - Описание фильма.
+    - Рейтинг фильма.
+    - Дату выхода.
+    - Список жанров.  
+     
+
+### **Технические требования:**
+- Использовать React, TypeScript.
+- Рекомендуется использовать хуки и функциональные компоненты React.
+- Разрешается использовать сторонние библиотеки (Axios, MobX, React Router) и при необходимости библиотеку компонентов Material UI.
