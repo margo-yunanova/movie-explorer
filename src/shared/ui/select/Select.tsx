@@ -1,7 +1,7 @@
 import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 import BaseSelect, { SelectChangeEvent } from "@mui/material/Select";
 import { FC } from "react";
-import { OutlinedInput } from "@mui/material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -23,29 +23,23 @@ export interface ISelect {
 
 export const Select: FC<ISelect> = ({ values, placeholder, value, handleSelect }) => {
   return (
-    <BaseSelect
-      displayEmpty
-      input={<OutlinedInput />}
-      renderValue={(selected) => {
-        if (selected.length === 0) {
-          return <em>{placeholder}</em>;
-        }
-
-        return selected;
-      }}
-      value={value}
-      onChange={handleSelect}
-      inputProps={{ "aria-label": "Without label" }}
-      MenuProps={MenuProps}
-    >
-      <MenuItem disabled value="">
-        <em>{placeholder}</em>
-      </MenuItem>
-      {values.map((value, i) => (
-        <MenuItem key={i} value={value}>
-          {value}
-        </MenuItem>
-      ))}
-    </BaseSelect>
+    <>
+      <InputLabel id={`select ${placeholder} label`}>{placeholder}</InputLabel>
+      <BaseSelect
+        labelId={`select ${placeholder} label`}
+        id={`select ${placeholder} label`}
+        value={value}
+        onChange={handleSelect}
+        inputProps={{ "aria-label": "Without label" }}
+        MenuProps={MenuProps}
+        label={placeholder}
+      >
+        {values.map((value, i) => (
+          <MenuItem key={i} value={value}>
+            {value}
+          </MenuItem>
+        ))}
+      </BaseSelect>
+    </>
   );
 };

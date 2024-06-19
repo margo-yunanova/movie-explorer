@@ -1,6 +1,6 @@
 import { Theme, useTheme } from "@mui/material/styles";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { FC } from "react";
 import { IGenre } from "../../types/types";
@@ -41,30 +41,24 @@ export const MultipleSelect: FC<IMultipleSelect> = ({
   const theme = useTheme();
 
   return (
-    <Select
-      multiple
-      displayEmpty
-      value={checkedGenres}
-      onChange={handleMultipleSelect}
-      input={<OutlinedInput />}
-      renderValue={(selected) => {
-        if (selected.length === 0) {
-          return <em>{placeholder}</em>;
-        }
-
-        return selected.join(", ");
-      }}
-      MenuProps={MenuProps}
-      inputProps={{ "aria-label": "Without label" }}
-    >
-      <MenuItem disabled value="">
-        <em>{placeholder}</em>
-      </MenuItem>
-      {genres?.map(({ name }) => (
-        <MenuItem key={name} value={name} style={getStyles(name, checkedGenres, theme)}>
-          {name}
-        </MenuItem>
-      ))}
-    </Select>
+    <>
+      <InputLabel id={`select ${placeholder} label`}>{placeholder}</InputLabel>
+      <Select
+        multiple
+        value={checkedGenres}
+        onChange={handleMultipleSelect}
+        labelId={`select ${placeholder} label`}
+        id={`select ${placeholder} label`}
+        label={placeholder}
+        MenuProps={MenuProps}
+        inputProps={{ "aria-label": "Without label" }}
+      >
+        {genres?.map(({ name }) => (
+          <MenuItem key={name} value={name} style={getStyles(name, checkedGenres, theme)}>
+            {name}
+          </MenuItem>
+        ))}
+      </Select>
+    </>
   );
 };
