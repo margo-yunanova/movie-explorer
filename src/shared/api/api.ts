@@ -97,7 +97,7 @@ type TGetMovieResponse = {
   description: string | null;
   rating: Record<"kp", number>;
   genres: TGenre[];
-  poster: Record<"url", string>;
+  poster: { url: string; previewUrl: string };
 };
 
 export const getMovieById = async (id: string) => {

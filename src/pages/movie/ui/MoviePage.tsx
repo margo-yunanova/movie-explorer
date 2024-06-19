@@ -11,7 +11,7 @@ export interface IMoviePage {
   description: string | null;
   rating: Record<"kp", number>;
   genres: IGenre[];
-  poster: Record<"url", string>;
+  poster: { url: string; previewUrl: string };
 }
 
 export const MoviePage = () => {

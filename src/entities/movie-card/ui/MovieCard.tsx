@@ -10,8 +10,8 @@ export interface IMovieCard {
   id: number;
   name: string;
   year?: number;
-  rating?: { imdb: number };
-  poster?: { url: string };
+  rating?: { kp: number };
+  poster?: { url: string; previewUrl: string };
   genres?: IGenre[];
   handleClick: () => void;
 }
@@ -26,18 +26,21 @@ export const MovieCard: FC<IMovieCard> = ({
 }) => {
   // TODO разобраться с высотой и растягиванием карточки
   return (
+    <Card elevation={5}>
+      <CardActionArea onClick={handleClick}>
         <Box display="flex" sx={{ aspectRatio: "2/3" }}>
-          {poster?.url ? (
+          {poster?.previewUrl ? (
             <CardMedia
               component="img"
               alt={`Постер фильма ${name}`}
-              src={poster?.url}
+              src={poster?.previewUrl}
               style={{ flexGrow: 1 }}
             />
           ) : (
             <Typography variant="h6">Постер скоро будет добавлен</Typography>
           )}
         </Box>
+        <CardContent>
           <Stack
             display="flex"
             flexDirection="row"
@@ -55,7 +58,7 @@ export const MovieCard: FC<IMovieCard> = ({
                 {genres?.map((item) => item.name).join(", ")}
               </Typography>
             </Stack>
-            <Chip label={rating?.imdb} color="success" variant="outlined" />
+            <Chip label={rating?.kp.toFixed(2)} color="success" variant="outlined" />
           </Stack>
         </CardContent>
       </CardActionArea>
