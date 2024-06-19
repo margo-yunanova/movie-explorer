@@ -24,7 +24,6 @@ export const MovieCard: FC<IMovieCard> = ({
   genres,
   handleClick,
 }) => {
-  // TODO разобраться с высотой и растягиванием карточки
   return (
     <Card elevation={5}>
       <CardActionArea onClick={handleClick}>
