@@ -126,6 +126,15 @@ export const HomePage = () => {
           Поиск
         </Button>
       </Container>
+      <Container sx={{ display: "flex", justifyContent: "center", pt: 2, pb: 3 }}>
+        <Pagination
+          count={5}
+          variant="outlined"
+          shape="rounded"
+          page={currentPage}
+          onChange={(_, value: number) => setCurrentPage(value)}
+        />
+      </Container>
       <Grid container spacing={{ xs: 2, md: 3 }} alignItems="stretch">
         {movies?.map(({ id, name, year, rating, poster, genres }) => (
           <Grid item xs={12} sm={4} md={3} key={id} display="flex" alignItems="strech">
