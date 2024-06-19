@@ -41,8 +41,10 @@ export const Select: FC<ISelect> = ({ values, placeholder, value, handleSelect }
       <MenuItem disabled value="">
         <em>{placeholder}</em>
       </MenuItem>
-      {values.map((value) => (
-        <MenuItem value={value}>{value}</MenuItem>
+      {values.map((value, i) => (
+        <MenuItem key={i} value={value}>
+          {value}
+        </MenuItem>
       ))}
     </BaseSelect>
   );

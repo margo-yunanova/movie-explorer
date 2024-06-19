@@ -29,8 +29,15 @@ const getMovies = http.get(`${options["apiV1.4"]}`, ({ request }) => {
   const ratingKp = url.searchParams.get("rating.kp")?.split("-");
 
   let filteredMovies = movies.docs;
-  // if (genresName.length !== 0) {
-  // }
+  if (genresName.length > 0) {
+    filteredMovies = filteredMovies.filter((movies) => {
+      if (movies.genres && movies.genres.length > 0) {
+        const genres = movies.genres.map((genre) => genre.name);
+
+        return genresName.every((genre) => genres.includes(genre));
+      }
+    });
+  }
 
   if (year) {
     const [from, to] = year;
