@@ -137,7 +137,7 @@ export const HomePage = () => {
             <Select
               values={rating}
               placeholder="Рейтинг по"
-              value={filterDraft.yearTo?.toString() ?? ""}
+              value={filterDraft.ratingTo?.toString() ?? ""}
               handleSelect={(e) =>
                 setFilterDraft({ ...filterDraft, ratingTo: +e.target.value })
               }
@@ -153,7 +153,7 @@ export const HomePage = () => {
 
       {pagination}
 
-      {!movies?.docs && (
+      {movies && movies.total === 0 && (
         <Container sx={{ display: "flex", justifyContent: "center", pt: 2, pb: 3 }}>
           <Typography>Результаты поиска по вашему запросу отсутствуют</Typography>
         </Container>
