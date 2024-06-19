@@ -6805,8 +6805,8 @@ export const movies: TGetMoviesResponse = {
       ],
     },
   ],
-  total: 164562,
+  total: 250,
   limit: 250,
   page: 1,
-  pages: 659,
+  pages: 1,
 };

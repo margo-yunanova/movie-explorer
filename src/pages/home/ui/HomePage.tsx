@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { MovieCard } from "../../../entities/movie-card";
-import { Button, Container, Grid, Pagination } from "@mui/material";
+import { Button, Container, Grid, Pagination, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { TMovie, getGenres, getMovies } from "../../../shared/api/api";
+import { TGetMoviesResponse, getGenres, getMovies } from "../../../shared/api/api";
 import { MultipleSelect } from "../../../shared/ui/multiple-select";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { IGenre } from "../../../shared/types/types";
@@ -15,7 +15,7 @@ const LIMIT_MOVIES = 50;
 export const HomePage = () => {
   const navigate = useNavigate();
 
-  const [movies, setMovies] = useState<TMovie[] | undefined>(undefined);
+  const [movies, setMovies] = useState<TGetMoviesResponse | undefined>(undefined);
   const [checkedGenres, setCheckedGenres] = useState<string[]>([]);
   const [genres, setGenres] = useState<IGenre[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -126,18 +126,23 @@ export const HomePage = () => {
           Поиск
         </Button>
       </Container>
+
       <Container sx={{ display: "flex", justifyContent: "center", pt: 2, pb: 3 }}>
-        <Pagination
-          count={5}
-          variant="outlined"
-          shape="rounded"
-          page={currentPage}
-          onChange={(_, value: number) => setCurrentPage(value)}
-        />
+        {movies?.docs && movies?.docs?.length > 0 ? (
+          <Pagination
+            count={movies?.pages}
+            variant="outlined"
+            shape="rounded"
+            page={currentPage}
+            onChange={(_, value: number) => setCurrentPage(value)}
+          />
+        ) : (
+          <Typography>Результаты поиска по вашему запросу отсутствуют</Typography>
+        )}
       </Container>
       <Grid container spacing={{ xs: 2, md: 3 }} alignItems="stretch">
-        {movies?.map(({ id, name, year, rating, poster, genres }) => (
-          <Grid item xs={12} sm={4} md={3} key={id} display="flex" alignItems="strech">
+        {movies?.docs?.map(({ id, name, year, rating, poster, genres }) => (
+          <Grid item xs={12} sm={4} md={3} key={id} display="flex" alignItems="stretch">
             <MovieCard
               id={id}
               name={name}
@@ -150,15 +155,17 @@ export const HomePage = () => {
           </Grid>
         ))}
       </Grid>
-      <Container sx={{ display: "flex", justifyContent: "center", pt: 2, pb: 3 }}>
-        <Pagination
-          count={5}
-          variant="outlined"
-          shape="rounded"
-          page={currentPage}
-          onChange={(_, value: number) => setCurrentPage(value)}
-        />
-      </Container>
+      {movies?.docs && movies?.docs?.length > 0 && (
+        <Container sx={{ display: "flex", justifyContent: "center", pt: 2, pb: 3 }}>
+          <Pagination
+            count={movies?.pages}
+            variant="outlined"
+            shape="rounded"
+            page={currentPage}
+            onChange={(_, value: number) => setCurrentPage(value)}
+          />
+        </Container>
+      )}
     </>
   );
 };

@@ -26,6 +26,10 @@ export type TMovie = {
 
 export type TGetMoviesResponse = {
   docs: TMovie[];
+  total: number;
+  limit: number;
+  page: number;
+  pages: number;
 };
 
 export const getMovies = async ({
@@ -84,7 +88,7 @@ export const getMovies = async ({
       { headers: options.headers }
     );
 
-    return response.data?.docs;
+    return response.data;
   } catch (error) {
     console.error(error);
   }

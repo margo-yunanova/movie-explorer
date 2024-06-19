@@ -54,11 +54,20 @@ const getMovies = http.get(`${options["apiV1.4"]}`, ({ request }) => {
       return movie.rating?.kp && movie.rating.kp >= +from && movie.rating.kp <= +to;
     });
   }
+
+  const paginationInfo = {
+    total: filteredMovies.length,
+    limit: +limit,
+    page: +page,
+    pages: Math.ceil(filteredMovies.length / +limit),
+  };
   const firstMovieIndex = (+page - 1) * +limit;
   const lastMovieIndex = firstMovieIndex + +limit;
+  filteredMovies = filteredMovies.slice(firstMovieIndex, lastMovieIndex);
 
   return HttpResponse.json({
-    docs: filteredMovies.slice(firstMovieIndex, lastMovieIndex),
+    docs: filteredMovies,
+    ...paginationInfo,
   });
 });
 
