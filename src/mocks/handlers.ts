@@ -27,15 +27,17 @@ const getMovies = http.get(`${options["apiV1.4"]}`, ({ request }) => {
   const genresName = url.searchParams.getAll("genres.name");
   const year = url.searchParams.get("year")?.split("-");
   const ratingKp = url.searchParams.get("rating.kp")?.split("-");
+  const page = url.searchParams.getAll("page");
+  const limit = url.searchParams.getAll("limit");
 
   let filteredMovies = movies.docs;
   if (genresName.length > 0) {
     filteredMovies = filteredMovies.filter((movies) => {
       if (movies.genres && movies.genres.length > 0) {
         const genres = movies.genres.map((genre) => genre.name);
-
         return genresName.every((genre) => genres.includes(genre));
       }
+      return false;
     });
   }
 
@@ -52,8 +54,12 @@ const getMovies = http.get(`${options["apiV1.4"]}`, ({ request }) => {
       return movie.rating?.kp && movie.rating.kp >= +from && movie.rating.kp <= +to;
     });
   }
+  const firstMovieIndex = (+page - 1) * +limit;
+  const lastMovieIndex = firstMovieIndex + +limit;
 
-  return HttpResponse.json({ docs: filteredMovies });
+  return HttpResponse.json({
+    docs: filteredMovies.slice(firstMovieIndex, lastMovieIndex),
+  });
 });
 
 export const handlers = [getGenres, getMovieById, getMovies];

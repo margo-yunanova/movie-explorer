@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { MovieCard } from "../../../entities/movie-card";
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, Pagination } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { TMovie, getGenres, getMovies } from "../../../shared/api/api";
 import { MultipleSelect } from "../../../shared/ui/multiple-select";
@@ -18,7 +18,7 @@ export const HomePage = () => {
   const [movies, setMovies] = useState<TMovie[] | undefined>(undefined);
   const [checkedGenres, setCheckedGenres] = useState<string[]>([]);
   const [genres, setGenres] = useState<IGenre[]>([]);
-  const [currentPage, setCurrentPage] = useState("1");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleChange = (event: SelectChangeEvent<typeof checkedGenres>) => {
     const {
@@ -40,7 +40,7 @@ export const HomePage = () => {
   const handleFilter = async () => {
     const filteredMovies = await getMovies({
       page: currentPage,
-      limit: LIMIT_MOVIES.toString(),
+      limit: LIMIT_MOVIES,
       genres: checkedGenres,
       rating: checkedRating,
       years: checkedYears,
@@ -51,7 +51,7 @@ export const HomePage = () => {
 
   useEffect(() => {
     Promise.all([
-      getMovies({ page: currentPage, limit: LIMIT_MOVIES.toString() }),
+      getMovies({ page: currentPage, limit: LIMIT_MOVIES }),
       getGenres(),
     ]).then(([data, genres]) => {
       setMovies(data);
@@ -141,6 +141,15 @@ export const HomePage = () => {
           </Grid>
         ))}
       </Grid>
+      <Container sx={{ display: "flex", justifyContent: "center", pt: 2, pb: 3 }}>
+        <Pagination
+          count={5}
+          variant="outlined"
+          shape="rounded"
+          page={currentPage}
+          onChange={(_, value: number) => setCurrentPage(value)}
+        />
+      </Container>
     </>
   );
 };

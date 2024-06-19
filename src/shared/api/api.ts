@@ -35,16 +35,16 @@ export const getMovies = async ({
   years,
   rating,
 }: {
-  page: string;
-  limit: string;
+  page: number;
+  limit: number;
   genres?: string[];
   years?: { from: string; to: string };
   rating?: { from: string; to: string };
 }) => {
   try {
     const params = {
-      page,
-      limit,
+      page: page.toString(),
+      limit: limit.toString(),
       sortField: "rating.kp",
       sortType: "1",
       type: "movie",
